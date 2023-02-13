@@ -61,22 +61,7 @@ jobs:
           path: |
             .
             !venv/
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-
-    - uses: azure/login@v3
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-        allow-no-subscriptions: true
-        
-    - name: Azure CLI script
-      uses: azure/CLI@v3
-      with:
-        inlineScript: |
-          az logout
-          az cache purge
-          az account clear
+   
   deploy:
     permissions:
       contents: none
@@ -92,12 +77,22 @@ jobs:
         with:
           name: python-app
           path: .
-
+      - uses: azure/login@v3
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          allow-no-subscriptions: true
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
+        uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.CLIENT_SECRET }}","subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
 
+      - name: Azure CLI script
+        uses: azure/CLI@v3
+        with:
+          inlineScript: |
+            az logout
+            az cache purge
+            az account clear
