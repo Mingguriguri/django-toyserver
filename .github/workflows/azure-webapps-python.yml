@@ -53,12 +53,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-    # Azure logout
-      - name: logout
-        run: |
-              az logout
-        if: always()
- 
+
       - name: Building web app
         uses: azure/appservice-build@v2
         
