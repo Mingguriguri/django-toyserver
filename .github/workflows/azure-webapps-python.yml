@@ -30,9 +30,8 @@ on:
 
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
 
@@ -43,10 +42,10 @@ jobs:
           cache: 'pip'
           
       - name: Login via Azure CLI
-        uses: azure/login@v1
+        uses: azure/login@v1      
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS}}
-        
+
 
       - name: Install dependencies
         run: |
@@ -59,23 +58,10 @@ jobs:
               az logout
         if: always()
  
-
-
-  deploy:
-    permissions:
-      contents: none
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Development'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
-      - uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          allow-no-subscriptions: true
-      - name: 'Deploy to Azure Web App'
+      - name: Building web app
+        uses: azure/appservice-build@v2
+        
+      - name: Deploy web App using GH Action azure/webapps-deploy
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
