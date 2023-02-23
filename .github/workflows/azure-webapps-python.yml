@@ -39,7 +39,11 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
-          
+      - name: Create and start virtual environment
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+        
       - name: Login via Azure CLI
         uses: azure/login@v1      
         with:
@@ -60,6 +64,12 @@ jobs:
           az account show
           az group list
           pwd
+      
+      - name: Collect static
+        run: python manage.py collectstatic
+
+      - name: Run tests
+        run: python manage.py test
       
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
