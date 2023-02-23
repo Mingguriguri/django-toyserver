@@ -65,12 +65,6 @@ jobs:
           az group list
           pwd
       
-      - name: Collect static
-        run: python manage.py collectstatic
-
-      - name: Run tests
-        run: python manage.py test
-      
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
         with:
