@@ -12,6 +12,21 @@ torch>=1.7.0
 torchvision>=0.8.1
 tqdm>=4.41.0
 
+
+# Develop and Deploy ---
+python>=3.8.15
+asgiref>=3.6.0
+backports.zoneinfo>=0.2.1
+Django>=4.1.5
+pip>=23.0.1
+setuptools>=66.1.1
+sqlparse>=0.4.3
+typing_extensions>=4.4.0
+uWSGI>=2.0.20
+wheel>=0.38.4
+whitenoise>=6.3.0
+nginx>=1.18.0
+
 # Logging -------------------------------------
 tensorboard>=2.4.1
 # wandb
@@ -35,3 +50,4 @@ seaborn>=0.11.0
 # pycocotools>=2.0  # COCO mAP
 # roboflow
 thop  # FLOPs computation
+
